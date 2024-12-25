@@ -3,17 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link type="text/css" rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <script type="module" src="/js/game.js"></script>
     <title>Pacman</title>
 </head>
 <body>
-    <canvas id="canvas" width="500" height="500"></canvas>
-    <div style="display: none;">
-        <img id="animations" src="assest/animations.gif" >
-        <img id="ghosts" src="assest/ghost.png">
-        <script src="game.js"></script>
-        <script src="ghost.js"></script>
-        <script src="pacman.js"></script>
+
+    <div id="welcome">
+        <input type="text" id="name" placeholder="Enter Username" maxlength="4">
+        <button id="startGame" onclick="return start()">Start game!</button>
     </div>
+    <div id="inBetween"> </div>
+    <div id="gameOver"> </div>
+    <div>
+        <p id="after" hidden><span>Level: </span><span id="levelEl">0</span></p>
+        <p id="after2" hidden><span>Score: </span><span id="scoreEl">0</span></p>
+        <p><span id="displayName"></span></p>
+    </div>
+
+    <div id="game">
+        <canvas ></canvas>
+    </div>
+
+
 </body>
 </html>

@@ -1,0 +1,73 @@
+body {
+    color: white;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    background-color: #2C613A;
+}
+
+/* Welcome Screen */
+#welcome {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    height: 100vh; /* Full height of the viewport */
+    position: relative; /* Ensure it stays in the middle */
+}
+
+/* Input Field */
+#name {
+    text-align: center;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    width: 200px; /* Set a fixed width for the input */
+}
+
+/* Button */
+#startGame {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #2C613A; 
+    color: white;
+border: 10px solid;
+    border-right-color: #1c3d25;
+    border-bottom-color: #1c3d25;
+    border-top-color: #418c55;
+    border-left-color: #418c55;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#startGame:hover {
+    background-color: #218838; /* Darker green */
+}
+
+/* Game Over Screen */
+#gameOver {
+    display: none; /* Hidden by default, show when game is over */
+    font-size: 24px;
+    color: red;
+}
+
+/* Game Container */
+#game {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background-color: #2C613A;
+}
+
+
+/* Score Display */
+#scoreEl {
+    font-weight: bold;
+}
