@@ -24,10 +24,10 @@ export async function start() {
 
   // Start the game after the username is successfully set
   await initializeGame();
+  startTimer(); 
 }
 
 function initializeGame(){
-
   //let
 let lastKey = ''
 let score = 0;
@@ -40,8 +40,10 @@ let scaredDuration = 3000;
 const canvas = document.querySelector('canvas');
 const after = document.getElementById('after');
 const after2 = document.getElementById('after2');
+const timer = document.getElementById("timer");
 after.style.display = 'block';
 after2.style.display = 'block';
+timer.style.display = 'block';
 
 // Calculate the width and height based on the map
 let mapWidth = (maps[currentMapIndex].length * Boundry.width)-80;
@@ -160,12 +162,19 @@ function circleCollideWithBorder({circle,border}){
 }
 
 function nextLevel(map) {
+
     mapWidth = maps[currentMapIndex].length * Boundry.width;
     mapHeight = maps[currentMapIndex].length * Boundry.height;
+    
 // Set the canvas width and height
 canvas.width = mapWidth;
 canvas.height = mapHeight;
     ++level
+
+
+    
+    // In the initializeGame function, start the timer
+
   // Initialize ghosts
   ghosts = [
     new Ghost({
@@ -418,8 +427,11 @@ function animate(){
         ghosts.splice(i,1)
         score += 50;
       }else{
-        cancelAnimationFrame(animationId)
-      console.log('YOU LOSE!')
+        clearInterval(timerInterval); // Stop the timer
+            document.getElementById("seconds").innerHTML = pad(sec % 60);
+            document.getElementById("minutes").innerHTML = pad(parseInt(sec / 60, 10));
+            console.log('YOU LOSE!');
+            cancelAnimationFrame(animationId);
       }
       
     } 
@@ -441,6 +453,9 @@ function animate(){
         nextLevel(maps[currentMapIndex]);
     }
     } else {
+        clearInterval(timerInterval); // Stop the timer
+        document.getElementById("seconds").innerHTML = pad(sec % 60);
+        document.getElementById("minutes").innerHTML = pad(parseInt(sec / 60, 10));
         cancelAnimationFrame(animationId)
         console.log('GAME OVER!')
     }
@@ -657,8 +672,11 @@ initialMap.forEach((row, i) => {
     });
 });
 
+
    // Start the animation
    animate(); 
+
+
     
    // Set up event listeners for key presses
    window.addEventListener('keydown', ({ key }) => {
@@ -715,6 +733,20 @@ initialMap.forEach((row, i) => {
                break;
        }
    });
+}
+
+var sec = 0;
+var timerInterval; // Declare timerInterval in a broader scope
+
+function pad(val) {
+    return val > 9 ? val : "0" + val;
+}
+
+function startTimer() {
+    timerInterval = setInterval(function() {
+        document.getElementById("seconds").innerHTML = pad(++sec % 60);
+        document.getElementById("minutes").innerHTML = pad(parseInt(sec / 60, 10));
+    }, 1000);
 }
 
 
