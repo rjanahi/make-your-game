@@ -9,10 +9,16 @@ var localName;
 var isPaused = false;
 var pauseMenu = document.getElementById("pauseMenu");
 var animationId;
+var nameL;
+var min;
+var seconds;
+var scorel;
+var levelL;
 
 export async function start() {
   const name = document.getElementById('name').value;
   const welcome = document.getElementById('welcome');
+
 
   if (name.length === 0) {
     alert('Enter Username!');
@@ -21,6 +27,7 @@ export async function start() {
 
   // Use localStorage to store the username
   localName =localStorage.setItem('user', name);
+  nameL = name;
 
   welcome.style.display = 'none';
   document.getElementById('displayName').innerHTML = name;
@@ -231,6 +238,7 @@ function nextLevel(map) {
 // Set the canvas width and height
 canvas.width = mapWidth;
 canvas.height = mapHeight;
+
     ++level
 
 
@@ -307,9 +315,6 @@ window.addEventListener('keyup', ({ key }) => {
         break;  
     }
   })
-  } else {
-      console.log('GAME OVER!');
-      cancelAnimationFrame(animationId);
   }
 }
 
@@ -318,6 +323,7 @@ let animationId
 
 function animate(){
     levelEl.innerHTML=level;
+    levelL =level;
     animationId = requestAnimationFrame(animate)
     c.clearRect(0,0,canvas.width,canvas.height)
 
@@ -414,11 +420,8 @@ function animate(){
         ghosts.splice(i,1)
         score += 50;
       }else{
-        clearInterval(timerInterval); // Stop the timer
-            document.getElementById("seconds").innerHTML = pad(sec % 60);
-            document.getElementById("minutes").innerHTML = pad(parseInt(sec / 60, 10));
-            console.log('YOU LOSE!');
-            cancelAnimationFrame(animationId);
+        gameOver();
+        cancelAnimationFrame(animationId); // Stop the animation
       }
       
     } 
@@ -439,12 +442,9 @@ function animate(){
       cancelAnimationFrame(animationId);
         nextLevel(maps[currentMapIndex]);
     }
-    } else {
-        clearInterval(timerInterval); // Stop the timer
-        document.getElementById("seconds").innerHTML = pad(sec % 60);
-        document.getElementById("minutes").innerHTML = pad(parseInt(sec / 60, 10));
-        cancelAnimationFrame(animationId)
-        console.log('GAME OVER!')
+    } else{
+       gameOver();
+       cancelAnimationFrame(animationId); // Stop the animation
     }
 }
 
@@ -490,6 +490,7 @@ function animate(){
                 pellets.splice(i, 1)
                 score += 10
                 scoreEl.innerHTML=score;
+                scorel = score;
             }
     }        
            
@@ -705,9 +706,39 @@ function pad(val) {
 function startTimer() {
     timerInterval = setInterval(function() {
         document.getElementById("seconds").innerHTML = pad(++sec % 60);
+        seconds = pad(sec % 60);
         document.getElementById("minutes").innerHTML = pad(parseInt(sec / 60, 10));
+        min =  pad(parseInt(sec / 60, 10));
     }, 1000);
 }
 
+function gameOver(){
 
+    document.getElementById('displayName').style.display = 'none';
+    document.getElementById('after').style.display = 'none';
+    document.getElementById('after2').style.display = 'none';
+    document.getElementById('timer').style.display = 'none';
+
+    clearInterval(timerInterval); // Stop the timer
+
+    // Update the game over display
+    document.getElementById("secondsl").innerHTML = seconds;
+    document.getElementById("minutesl").innerHTML = min;
+
+    // Display the final score
+    document.getElementById("scorel").innerHTML = scorel;
+
+    //Display the final Level
+    document.getElementById("levelL").innerHTML = levelL;
+
+
+    // Display player name
+    const playerNameDisplay = document.getElementById("displayNamel");
+    playerNameDisplay.innerHTML = nameL;
+
+    // Show the game over menu
+    const goodbye = document.getElementById('gameOver');
+    goodbye.style.display = 'block'; // Ensure the game over menu is displayed
+    console.log('YOU LOSE!'); // Log message
+}
 window.start = start;

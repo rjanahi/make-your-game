@@ -14,11 +14,11 @@
         <button id="startGame" onclick="return start()">Start game!</button>
     </div>
     <div id="inBetween"> </div>
-    <div id="gameOver"> </div>
+    
     <div>
+        <p><span id="displayName"></span></p>
         <p id="after" hidden><span>Level: </span><span id="levelEl">0</span></p>
         <p id="after2" hidden><span>Score: </span><span id="scoreEl">0</span></p>
-        <p><span id="displayName"></span></p>
         <p id="timer" hidden><span id="minutes">00</span>:<span id="seconds">00</span></p>
     </div>
 
@@ -31,6 +31,15 @@
         <button id="resumeButton">Resume</button>
         <button id="restartButton">Restart</button>
     </div>
-    
+
+    <div id="gameOver" hidden> 
+
+        <h2>Game Over!</h2>
+        <p>Player: <span id="displayNamel"></p>
+        <p>Your Level: <span id="levelL">0</span></p>  
+        <p>Your Score: <span id="scorel">0</span></p>
+        <p>Time: <span id="minutesl">00</span>:<span id="secondsl">00</span></p>
+        <button id="restartButton">Restart</button>
+    </div>
 </body>
 </html>
