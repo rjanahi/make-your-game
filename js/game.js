@@ -6,6 +6,9 @@ import{maps,symbolMap}from './map.js';
 
 
 var localName;
+var isPaused = false;
+var pauseMenu = document.getElementById("pauseMenu");
+var animationId;
 
 export async function start() {
   const name = document.getElementById('name').value;
@@ -25,9 +28,27 @@ export async function start() {
   // Start the game after the username is successfully set
   await initializeGame();
   startTimer(); 
+  togglePause();
 }
 
 function initializeGame(){
+
+    function togglePause() {
+        isPaused = !isPaused;
+        console.log(isPaused);
+        if (isPaused) {
+            cancelAnimationFrame(animationId);
+            clearInterval(timerInterval); // Stop the timer
+            pauseMenu.style.display = "flex";
+            console.log("Pause toggled");
+        } else {
+            animate(); // Resume animation
+            startTimer(); // Restart the timer
+            pauseMenu.style.display = "none";
+            console.log("Pause untoggled");
+        }
+    }
+    document.getElementById('resumeButton').addEventListener('click', togglePause);
   //let
 let lastKey = ''
 let score = 0;
@@ -38,6 +59,7 @@ let scaredDuration = 3000;
 
 //Consts
 const canvas = document.querySelector('canvas');
+const game = document.getElementById('game');
 const after = document.getElementById('after');
 const after2 = document.getElementById('after2');
 const timer = document.getElementById("timer");
@@ -46,12 +68,14 @@ after2.style.display = 'block';
 timer.style.display = 'block';
 
 // Calculate the width and height based on the map
-let mapWidth = (maps[currentMapIndex].length * Boundry.width)-80;
+let mapWidth = (maps[currentMapIndex][0].length * Boundry.width);
 let mapHeight = maps[currentMapIndex].length * Boundry.height;
 
 // Set the canvas width and height
 canvas.width = mapWidth;
 canvas.height = mapHeight;
+game.style.width=mapWidth;
+game.style.height=mapHeight;
 const c = canvas.getContext('2d')
 
 
@@ -64,8 +88,34 @@ const PLAYER_SPEED = 4;
 
 
 //enemy
-let ghosts = [
-    new Ghost({
+let ghosts = [];
+ghosts = ghostInit(ghosts);
+function ghostInit(ghosts){
+    ghosts = [
+        new Ghost({
+            position:{
+             x: Boundry.width * 8 + Boundry.width / 2,
+             y: Boundry.height  + Boundry.height / 2
+              },
+            velocity:{
+                x: Ghost.speed,
+                y:0
+            },
+            c:c
+        }),
+        new Ghost({
+          position:{
+           x: Boundry.width * 8 + Boundry.width / 2,
+           y: Boundry.height  + Boundry.height / 2
+            },
+          velocity:{
+              x:Ghost.speed,
+              y:0
+          },
+          color :'pink',
+          c:c
+      }),
+      new Ghost({
         position:{
          x: Boundry.width * 8 + Boundry.width / 2,
          y: Boundry.height  + Boundry.height / 2
@@ -74,46 +124,58 @@ let ghosts = [
             x: Ghost.speed,
             y:0
         },
+        color :'cyan',
         c:c
     }),
     new Ghost({
       position:{
        x: Boundry.width * 8 + Boundry.width / 2,
        y: Boundry.height  + Boundry.height / 2
-        },
+    },
       velocity:{
           x:Ghost.speed,
           y:0
       },
-      color :'pink',
+      color :'chartreuse',
       c:c
-  }),
-  new Ghost({
-    position:{
-     x: Boundry.width * 8 + Boundry.width / 2,
-     y: Boundry.height  + Boundry.height / 2
-      },
-    velocity:{
-        x: Ghost.speed,
-        y:0
-    },
-    color :'cyan',
-    c:c
-}),
-new Ghost({
-  position:{
-   x: Boundry.width * 8 + Boundry.width / 2,
-   y: Boundry.height  + Boundry.height / 2
-},
-  velocity:{
-      x:Ghost.speed,
-      y:0
-  },
-  color :'chartreuse',
-  c:c
-})
-];
-
+    })
+    ];
+    return ghosts
+}
+function mapInit(map){
+    map.forEach((row, i) => {
+        row.forEach((symbol, j) => {
+            const imagePath = symbolMap[symbol];
+            if (imagePath) {
+                boundries.push(new Boundry({
+                    position: {
+                        x: Boundry.width * j,
+                        y: Boundry.height * i
+                    },
+                    image: createImage(imagePath),
+                    c: c
+                }));
+            } else if (symbol === '.') {
+                pellets.push(new Pellet({
+                    position: {
+                        x: j * Boundry.width + Boundry.width / 2,
+                        y: i * Boundry.height + Boundry.height / 2
+                    },
+                    c: c
+                }));
+            } else if (symbol === 'p') {
+                powerUps.push(new PowerUp({
+                    position: {
+                        x: j * Boundry.width + Boundry.width / 2,
+                        y: i * Boundry.height + Boundry.height / 2
+                    },
+                    c: c
+                }));
+            }
+        });
+    });
+    return map;
+}
 //player
 let player = new Pacman({
     position: {
@@ -163,7 +225,7 @@ function circleCollideWithBorder({circle,border}){
 
 function nextLevel(map) {
 
-    mapWidth = maps[currentMapIndex].length * Boundry.width;
+    mapWidth = maps[currentMapIndex][0].length * Boundry.width;
     mapHeight = maps[currentMapIndex].length * Boundry.height;
     
 // Set the canvas width and height
@@ -172,97 +234,18 @@ canvas.height = mapHeight;
     ++level
 
 
-    
-    // In the initializeGame function, start the timer
+
 
   // Initialize ghosts
-  ghosts = [
-    new Ghost({
-        position:{
-         x: Boundry.width * 8 + Boundry.width / 2,
-         y: Boundry.height  + Boundry.height / 2
-          },
-        velocity:{
-            x: Ghost.speed,
-            y:0
-        },
-        c:c
-    }),
-    new Ghost({
-      position:{
-       x: Boundry.width * 8 + Boundry.width / 2,
-       y: Boundry.height  + Boundry.height / 2
-        },
-      velocity:{
-          x:Ghost.speed,
-          y:0
-      },
-      color :'pink',
-      c:c
-  }),
-  new Ghost({
-    position:{
-     x: Boundry.width * 8 + Boundry.width / 2,
-     y: Boundry.height  + Boundry.height / 2
-      },
-    velocity:{
-        x: Ghost.speed,
-        y:0
-    },
-    color :'cyan',
-    c:c
-}),
-new Ghost({
-  position:{
-   x: Boundry.width * 8 + Boundry.width / 2,
-   y: Boundry.height  + Boundry.height / 2
-},
-  velocity:{
-      x:Ghost.speed,
-      y:0
-  },
-  color :'chartreuse',
-  c:c
-})
-];
+  ghosts = ghostInit(ghosts);
 
   player.position.x = Boundry.width + Boundry.width / 2; // Set to desired x-coordinate
   player.position.y = Boundry.height + Boundry.height / 2; // Set to desired y-coordinate
 
   if (map && map.length > 0) {
-      // Load boundaries and objects from the map
-      map.forEach((row, i) => {
-          row.forEach((symbol, j) => {
-              const imagePath = symbolMap[symbol];
-              if (imagePath) {
-                  boundries.push(new Boundry({
-                      position: {
-                          x: Boundry.width * j,
-                          y: Boundry.height * i
-                      },
-                      image: createImage(imagePath),
-                      c: c
-                  }));
-              } else if (symbol === '.') {
-                  pellets.push(new Pellet({
-                      position: {
-                          x: j * Boundry.width + Boundry.width / 2,
-                          y: i * Boundry.height + Boundry.height / 2
-                      },
-                      c: c
-                  }));
-              } else if (symbol === 'p') {
-                  powerUps.push(new PowerUp({
-                      position: {
-                          x: j * Boundry.width + Boundry.width / 2,
-                          y: i * Boundry.height + Boundry.height / 2
-                      },
-                      c: c
-                  }));
-              }
-          });
-      });
-
+          //load map
+     mapInit(map);
+     
       // Restart animation for the new level
       animate();
       //Event listeners
@@ -296,30 +279,34 @@ window.addEventListener('keydown',({key})=>{
     }
 })
 
-window.addEventListener('keyup',({key})=>{
-  switch (key){
-      case 'w' :
-        case 'W' :
-          case 'ArrowUp' :
-          keys.w.pressed = false
-          break
-      case 's' :
-        case 'S' :
-        case 'ArrowDown' :
-          keys.s.pressed = false
-          break
-      case 'a' :
-        case 'A' :
-        case 'ArrowLeft':
-          keys.a.pressed = false
-          break
-      case 'd' :
-        case 'D' :
-        case 'ArrowRight' :
-          keys.d.pressed = false
-          break
-  }
-})
+window.addEventListener('keyup', ({ key }) => {
+    switch (key) {
+      case 'w':
+      case 'W':
+      case 'ArrowUp':
+        keys.w.pressed = false;
+        break;
+      case 's':
+      case 'S':
+      case 'ArrowDown':
+        keys.s.pressed = false;
+        break;
+      case 'a':
+      case 'A':
+      case 'ArrowLeft':
+        keys.a.pressed = false;
+        break;
+      case 'd':
+      case 'D':
+      case 'ArrowRight':
+        keys.d.pressed = false;
+        break;
+      case 'p':
+      case 'P':
+        togglePause();
+        break;  
+    }
+  })
   } else {
       console.log('GAME OVER!');
       cancelAnimationFrame(animationId);
@@ -476,7 +463,7 @@ function animate(){
         powerUps.splice(i, 1)
         score += 20;
         ghosts.forEach(ghost => {
-            ghost.speed = ghost.speed*2
+            ghost.speed = ghost.speed
           ghost.scared = true   
         })
         if (scaredTimeout) {
@@ -639,38 +626,7 @@ function animate(){
     
 }
 
-const initialMap = maps[currentMapIndex];
-initialMap.forEach((row, i) => {
-    row.forEach((symbol, j) => {
-        const imagePath = symbolMap[symbol];
-        if (imagePath) {
-            boundries.push(new Boundry({
-                position: {
-                    x: Boundry.width * j,
-                    y: Boundry.height * i
-                },
-                image: createImage(imagePath),
-                c: c
-            }));
-        } else if (symbol === '.') {
-            pellets.push(new Pellet({
-                position: {
-                    x: j * Boundry.width + Boundry.width / 2,
-                    y: i * Boundry.height + Boundry.height / 2
-                },
-                c: c
-            }));
-        } else if (symbol === 'p') {
-            powerUps.push(new PowerUp({
-                position: {
-                    x: j * Boundry.width + Boundry.width / 2,
-                    y: i * Boundry.height + Boundry.height / 2
-                },
-                c: c
-            }));
-        }
-    });
-});
+mapInit(maps[currentMapIndex]);
 
 
    // Start the animation
@@ -710,29 +666,33 @@ initialMap.forEach((row, i) => {
    });
    
    window.addEventListener('keyup', ({ key }) => {
-       switch (key) {
-           case 'w':
-           case 'W':
-           case 'ArrowUp':
-               keys.w.pressed = false;
-               break;
-           case 's':
-           case 'S':
-           case 'ArrowDown':
-               keys.s.pressed = false;
-               break;
-           case 'a':
-           case 'A':
-           case 'ArrowLeft':
-               keys.a.pressed = false;
-               break;
-           case 'd':
-           case 'D':
-           case 'ArrowRight':
-               keys.d.pressed = false;
-               break;
-       }
-   });
+    switch (key) {
+        case 'w':
+        case 'W':
+        case 'ArrowUp':
+          keys.w.pressed = false;
+          break;
+        case 's':
+        case 'S':
+        case 'ArrowDown':
+          keys.s.pressed = false;
+          break;
+        case 'a':
+        case 'A':
+        case 'ArrowLeft':
+          keys.a.pressed = false;
+          break;
+        case 'd':
+        case 'D':
+        case 'ArrowRight':
+          keys.d.pressed = false;
+          break;
+        case 'p':
+        case 'P':
+          togglePause();
+          break;  
+      }
+    });
 }
 
 var sec = 0;
