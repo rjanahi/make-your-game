@@ -140,3 +140,23 @@ border: 10px solid;
     align-items: center; /* Center vertically */
     flex-direction: column; /* Stack elements vertically */
 }
+
+/* Start Over Button */
+#startOver {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #2C613A;
+    color: white;
+    border: 10px solid;
+    border-right-color: #1c3d25;
+    border-bottom-color: #1c3d25;
+    border-top-color: #418c55;
+    border-left-color: #418c55;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px; /* Space above the button */
+}
+
+#startOver:hover {
+    background-color: #218838; /* Darker green */
+}
