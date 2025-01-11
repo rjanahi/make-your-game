@@ -11,6 +11,7 @@ const welcome = document.getElementById('welcome');
 const pauseMenu = document.getElementById("pauseMenu");
 const playerNameDisplay = document.getElementById("displayNamel");
 const goodbye = document.getElementById('gameOver');
+const theName = document.getElementById('theName');
 
 
 const scoreEl = document.querySelector('#scoreEl')
@@ -36,4 +37,4 @@ const keys = {
 }
 
 
-export{canvas,c,game,after,after2,timer,welcome,pauseMenu,playerNameDisplay,goodbye,scoreEl,levelEl,pellets,boundries,powerUps,PLAYER_SPEED,keys}
+export{canvas,c,game,after,after2,timer,welcome,pauseMenu,playerNameDisplay,goodbye,theName,scoreEl,levelEl,pellets,boundries,powerUps,PLAYER_SPEED,keys}

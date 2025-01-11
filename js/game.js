@@ -3,12 +3,7 @@
 //imports
 import {Boundry,Pacman,Ghost,Pellet,PowerUp} from './classes.js'; //classes
 import{maps,symbolMap}from './map.js';
-import{canvas,c,game,after,after2,timer,welcome,pauseMenu,playerNameDisplay,goodbye,scoreEl,levelEl,pellets,boundries,powerUps,PLAYER_SPEED,keys}from'./variables.js'
-
-
-
-var sec = 0;
-var timerInterval; 
+import{canvas,c,game,after,after2,timer,welcome,pauseMenu,playerNameDisplay,goodbye,theName,scoreEl,levelEl,pellets,boundries,powerUps,PLAYER_SPEED,keys}from'./consts.js'
 
 let isPaused = false;
 let isRestart = false;
@@ -25,11 +20,16 @@ let levelL;
 let lastKey = ''
 let score = 0;
 let level = 1;
-let currentMapIndex = 0;
 let scaredTimeout = null;
-let scaredDuration = 6000;
+let scaredDuration = 12000;
 let ghosts = []
 let nameL;
+let sec = 0;
+let timerInterval; 
+let clearedMaps = [];
+let unclearedMaps = maps;
+
+const currentMapIndex = 0;
 
 export async function start() {
    name = document.getElementById('name').value;
@@ -56,7 +56,6 @@ function initializeGame(){
    lastKey = ''
    score = 0;
    level = 1;
-   currentMapIndex = 0;
    scaredTimeout = null;
    scaredDuration = 3000;
    ghosts = []
@@ -65,8 +64,8 @@ function initializeGame(){
 
 
 // Calculate the width and height based on the map
-let mapWidth = (maps[currentMapIndex][0].length * Boundry.width);
-let mapHeight = maps[currentMapIndex].length * Boundry.height;
+let mapWidth = (unclearedMaps[currentMapIndex][0].length * Boundry.width);
+let mapHeight = unclearedMaps[currentMapIndex].length * Boundry.height;
 
 // Set the canvas width and height
 canvas.width = mapWidth;
@@ -98,8 +97,8 @@ function nextLevel() {
     lastKey = ''
     ghosts = [];
 
-    mapWidth = maps[currentMapIndex][0].length * Boundry.width;
-    mapHeight = maps[currentMapIndex].length * Boundry.height;
+    mapWidth = unclearedMaps[currentMapIndex][0].length * Boundry.width;
+    mapHeight = unclearedMaps[currentMapIndex].length * Boundry.height;
     
     // Set the canvas width and height
     canvas.width = mapWidth;
@@ -109,7 +108,7 @@ function nextLevel() {
     ghosts = ghostInit(ghosts);
     player.position.x= Boundry.width + Boundry.width / 2
     player.position.y= Boundry.height + Boundry.height / 2
-    mapInit(maps[currentMapIndex]);
+    mapInit(unclearedMaps[currentMapIndex]);
     animate();
     eventListeners();
   }
@@ -191,10 +190,10 @@ function animate(){
       
   //win condition
   if (pellets.length === 0) {
-    maps.splice(currentMapIndex, 1); // Remove the cleared map
-    currentMapIndex = Math.min(currentMapIndex, maps.length - 1); // Ensure valid index
+    clearedMaps.push(unclearedMaps[currentMapIndex]); 
+    unclearedMaps.splice(currentMapIndex, 1); // Remove the cleared map
     if (currentMapIndex >= 0) {
-      if (currentMapIndex === 0 && maps.length > 0) {
+      if (currentMapIndex === 0 && unclearedMaps.length > 0) {
 
       cancelAnimationFrame(animationId);
       nextLevel();
@@ -338,7 +337,7 @@ function animate(){
     
 }
 
-mapInit(maps[currentMapIndex]);
+mapInit(unclearedMaps[currentMapIndex]);
 
 // Start the animation
 animate(); 
@@ -613,12 +612,53 @@ function moveCharacter(){
 }
 }
 
+function startOver() {
+  isGameOver=false;
+
+  unclearedMaps.unshift(...clearedMaps);
+  clearedMaps = [];
+
+ sec = 0;
+ clearInterval(timerInterval);
+ pellets.length = 0;
+ boundries.length = 0;
+ powerUps.length = 0;
+ lastKey = '';
+ ghosts = [];
+ score=0;
+ level=1;
+ scorel =0;
+name = nameL;
+
+ mapWidth = unclearedMaps[currentMapIndex][0].length * Boundry.width;
+ mapHeight = unclearedMaps[currentMapIndex].length * Boundry.height;
+ 
+ // Set the canvas width and height
+ canvas.width = mapWidth;
+ canvas.height = mapHeight;
+
+
+ ghosts = ghostInit(ghosts);
+ player.position.x= Boundry.width + Boundry.width / 2
+ player.position.y= Boundry.height + Boundry.height / 2
+ mapInit(unclearedMaps[currentMapIndex]);
+ UI();
+ animate();
+ eventListeners();
+ startTimer();
+}
+
+document.getElementById('startOver').addEventListener('click', startOver);
+
 function UI(){
 
   if (isGame){
+    theName.style.display = 'block'
+    document.getElementById('displayName').innerHTML = nameL;
     after.style.display = 'block';
     after2.style.display = 'block';
     timer.style.display = 'block';
+    goodbye.style.display = 'none'; 
   }
 
   if (isPaused){
@@ -632,24 +672,25 @@ function UI(){
     document.getElementById('after').style.display = 'none';
     document.getElementById('after2').style.display = 'none';
     document.getElementById('timer').style.display = 'none';
-     // Update the game over display
+   
      document.getElementById("secondsl").innerHTML = seconds;
      document.getElementById("minutesl").innerHTML = min;
-     // Display the final score
+  
      document.getElementById("scorel").innerHTML = scorel;
-     //Display the final Level
+  
      document.getElementById("levelL").innerHTML = levelL;
-     // Display player name
+ 
      playerNameDisplay.innerHTML = nameL;
-     // Show the game over menu
-     goodbye.style.display = 'block'; // Ensure the game over menu is displayed
+
+     goodbye.style.display = 'block'; 
+  }else{
+    isGame=true;
   }
 
   if (isRestart){//todo
   }
   
-  if (isStartOver){//todo
-  }
+ 
   
 }
 }
@@ -668,23 +709,3 @@ function startTimer() {
 }
 
 window.start = start;
-
-
-// function startOver() {
-//   // Clear all game-related variables and states
-//   cancelAnimationFrame(animationId); // Stop the animation
-//   clearInterval(timerInterval); // Stop the timer
-
-//   // Reset the UI
-//   document.getElementById('welcome').style.display = 'block'; // Show welcome screen
-//   document.getElementById('after').style.display = 'none';
-//   document.getElementById('after2').style.display = 'none';
-//   document.getElementById('timer').style.display = 'none';
-//   document.getElementById('gameOver').style.display = 'none';
-
-//   // Reset stored name
-//   localStorage.removeItem('user');
-// }
-
-
-// document.getElementById('startOver').addEventListener('click', startOver);

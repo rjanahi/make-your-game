@@ -1,6 +1,6 @@
 //map.js
 //maps
-const maps = [
+let maps = [
 
   // Level 1
   [
