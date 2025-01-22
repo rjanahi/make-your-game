@@ -3,7 +3,7 @@
 //imports
 import {Boundry,Pacman,Ghost,Pellet,PowerUp} from './classes.js'; //classes
 import{maps,symbolMap}from './map.js';
-import{canvas,c,game,after,after2,timer,welcome,pauseMenu,playerNameDisplay,goodbye,theName,scoreEl,levelEl,pellets,boundries,powerUps,PLAYER_SPEED,keys}from'./consts.js'
+import{canvas,c,game,after,after2,timer,welcome,pauseMenu,playerNameDisplay,goodbye,theName,scoreEl,levelEl,pellets,boundries,powerUps,PLAYER_SPEED,keys,currentMapIndex}from'./consts.js'
 
 let isPaused = false;
 let isRestart = false;
@@ -29,7 +29,6 @@ let timerInterval;
 let clearedMaps = [];
 let unclearedMaps = maps;
 
-const currentMapIndex = 0;
 
 export async function start() {
    name = document.getElementById('name').value;
@@ -649,6 +648,7 @@ name = nameL;
 }
 
 document.getElementById('startOver').addEventListener('click', startOver);
+
 
 function UI(){
 

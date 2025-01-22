@@ -36,5 +36,7 @@ const keys = {
     },
 }
 
+const currentMapIndex = 0;
 
-export{canvas,c,game,after,after2,timer,welcome,pauseMenu,playerNameDisplay,goodbye,theName,scoreEl,levelEl,pellets,boundries,powerUps,PLAYER_SPEED,keys}
+
+export{canvas,c,game,after,after2,timer,welcome,pauseMenu,playerNameDisplay,goodbye,theName,scoreEl,levelEl,pellets,boundries,powerUps,PLAYER_SPEED,keys,currentMapIndex}
