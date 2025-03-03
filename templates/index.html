@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tetris Game</title>
+    <link rel="stylesheet" href="../CSS/index.css">
+    <link rel="icon" href="../IMG/logo.png">
+    <script>
+      function saveName() {
+          const nameInput = document.getElementById('name').value.toUpperCase();
+          if (nameInput.length <= 0) {
+              alert('Must Enter A Username!!!');
+              return false; // Return false if the username is empty
+          }
+          localStorage.setItem('name', nameInput); // Store the name in local storage
+          return true; // Return true if successful
+      }
+  
+      // This function will run when the Enter button is clicked
+      function handleEnter() {
+          if (saveName()) { // Check if the name was saved successfully
+              window.location.href = '/game'; // Redirect to the game page
+          }
+      }
+  
+      // Add an event listener to call handleEnter on Enter key press
+      window.onload = function() {
+          const nameInput = document.getElementById('name');
+          nameInput.addEventListener('keypress', function(event) {
+              if (event.key === 'Enter') {
+                  event.preventDefault(); // Prevent the default action (like a newline)
+                  handleEnter(); // Call the handleEnter function
+              }
+          });
+      };
+  </script>
+</head>
+<body>
+  <div id="container">
+    <img src="../IMG/logo2.png">
+    <h1>Enter your name</h1>
+    <input type="text" id="name" maxlength="4" style="text-transform: uppercase;" ><br>
+    <button id="button" onclick="handleEnter()">Enter</button> <!-- Call handleEnter on button click -->
+  </div>
+</body>
+</html>

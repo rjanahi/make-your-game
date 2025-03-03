@@ -1,162 +1,50 @@
 body {
-    color: white;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+    margin: 0;
     font-family: Arial, sans-serif;
-    background-color: #2C613A;
-}
-
-/* Welcome Screen */
-#welcome {
+    background-color: #000;
+    color: #fff;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Center vertically */
-    align-items: center; /* Center horizontally */
-    height: 100vh; /* Full height of the viewport */
-    position: relative; /* Ensure it stays in the middle */
-}
-
-/* Input Field */
-#name {
-    text-align: center;
-    padding: 10px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    width: 200px; /* Set a fixed width for the input */
-}
-
-/* Button */
-#startGame {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #2C613A; 
-    color: white;
-border: 10px solid;
-    border-right-color: #1c3d25;
-    border-bottom-color: #1c3d25;
-    border-top-color: #418c55;
-    border-left-color: #418c55;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-#startGame:hover {
-    background-color: #218838; /* Darker green */
-}
-
-/* Game Over Screen */
-#gameOver {
-    display: none; /* Hidden by default, show when game is over */
-    font-size: 24px;
-    color: red;
-}
-
-/* Game Container */
-#game {
-    display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
-    background-color: #2C613A;
+    text-align: center;
+    height: 100vh;
 }
 
+#name{
+    text-align: center;
+}
 
-/* Score Display */
-#scoreEl {
+#container{
+    justify-content: center;
+    align-items: center;
+}
+
+img{
+    width: 500px;
+    height: 200px;
+}
+
+button {
+    background-color: #444; /* Dark background for the button */
+    color: #fff;            /* White text color */
+    border: 2px solid #fff; /* White border */
+    border-radius: 5px;     /* Slightly rounded corners */
+    padding: 10px 20px;     /* Padding for a better size */
+    font-size: 1em;         /* Font size */
+    cursor: pointer;        /* Pointer cursor on hover */
+}
+
+button:hover {
+    background-color: #555; /* Lighter background on hover */
+}
+
+input{
+    background-color: #444;
+    font-size: large;
     font-weight: bold;
+    padding: 0%;
+    margin-bottom: 10px;
+    color:white;
 }
 
-/* Pause Menu */
-#pauseMenu {
-    display: none; /* Hidden by default */
-    position: fixed; /* Fixed position to cover the entire viewport */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    flex-direction: column; /* Stack elements vertically */
-}
-
-/* Resume Button */
-#resumeButton {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #2C613A;
-    color: white;
-    border: 10px solid;
-    border-right-color: #1c3d25;
-    border-bottom-color: #1c3d25;
-    border-top-color: #418c55;
-    border-left-color: #418c55;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 20px; /* Space above the button */
-}
-
-#resumeButton:hover {
-    background-color: #218838; /* Darker green */
-}
-
-/* Restart Button */
-#restartButton {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #2C613A;
-    color: white;
-    border: 10px solid;
-    border-right-color: #1c3d25;
-    border-bottom-color: #1c3d25;
-    border-top-color: #418c55;
-    border-left-color: #418c55;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 20px; /* Space above the button */
-}
-
-#restartButton:hover {
-    background-color: #218838; /* Darker green */
-}
-
-/* Pause Menu */
-#gameOver {
-    color: white;
-    display: none; /* Hidden by default */
-    position: fixed; /* Fixed position to cover the entire viewport */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.841); /* Semi-transparent background */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    flex-direction: column; /* Stack elements vertically */
-}
-
-/* Start Over Button */
-#startOver {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #2C613A;
-    color: white;
-    border: 10px solid;
-    border-right-color: #1c3d25;
-    border-bottom-color: #1c3d25;
-    border-top-color: #418c55;
-    border-left-color: #418c55;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 20px; /* Space above the button */
-}
-
-#startOver:hover {
-    background-color: #218838; /* Darker green */
-}

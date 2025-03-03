@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tetris Game</title>
+    <link rel="stylesheet" href="../CSS/styles.css">
+    <link rel="icon" href="../IMG/logo.png">
+    <script>
+
+        function hadleStartOver() {
+            window.location.href = '/'; // Redirect to the game page
+        }
+    </script>
+</head>
+<body>
+    
+    <div id="game-container">
+        <div>
+            <div id="fps">FPS: 0</div>
+            <div id="grid"></div>
+        </div>
+        <div id="pause-menu" hidden>
+            <button id="continue-btn">Continue</button><br><br>
+            <button id="restart-btn">Restart</button>
+        </div>
+    </div>
+    <div id="container">
+    <div id="next-tetromino-container">
+        <h3>Next</h3>
+        <div id="next-tetromino"></div>
+    </div>
+    
+    <div id="scoreboard">
+        
+        <table>
+            <tr><th><span id="timer">Time: 0</span></th></tr>
+            <tr><th><span id="score">Score: 0</span></th></tr>
+            <tr><th>Lives: <span id="lives">1</span></th></tr>
+        </table>
+        
+    </div>
+
+</div>
+    <div id="gameOver" hidden>
+        <form action="/scoreboard" method="post"></form>
+        <table>
+            <tr>
+                <th colspan="4">SCOREBOARD</th>
+            </tr>
+            <tr>
+                <td>NAME</td>
+                <td>TIME</td>
+                <td>SCORE</td>
+                <td>LIVES</td>
+            </tr>
+            <tr>
+                <td><span id="name"> Player</span></td>
+                <td><span id="timer2"> 0</span></td>
+                <td><span id="score2">0</span></td>
+                <td>1</td>
+            </tr>
+            {{range .}}
+            <tr><th>{{.username}}</th>
+            <th>{{.time}}</th>
+            <th>{{.score}}</th>
+            <th>1</th></tr>
+            {{end}}
+
+        </table>
+        
+        
+        <br>
+        <button onclick="hadleStartOver()">Start Over</button>
+    </div>
+    <script src="../JS/script.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,44 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #000; /* Black background */
+  color: #fff; /* White text */
+}
+
+.error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #000; /* Black background */
+}
+
+.error-message {
+  text-align: center;
+  padding: 20px;
+  background-color: #333; /* Dark grey for contrast */
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Light shadow for depth */
+}
+
+h1 {
+  font-size: 36px;
+  color: #fff; /* White to match the theme */
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 18px;
+  color: #fff; /* White text */
+  margin-bottom: 20px;
+}
+
+a {
+  color: #fff; /* White links */
+  font-weight: bold;
+}
+
+a:hover {
+  color: #ff8b43; /* Orange on hover for contrast */
+}
