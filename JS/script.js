@@ -40,7 +40,7 @@ const blocks = [
     { shape: [[0, 1, 1], [1, 1, 0]], color: 'yellow' }, // S -> Yellow
     { shape: [[1, 1, 0], [0, 1, 1]], color: 'red' }, // Z -> Red
 ];
-
+const colors = ['cyan','orange', 'purple','green','blue','yellow','red'];
 
 //this creates the base grid for the game by creating a div for each block.
 function createGrid() {
@@ -48,6 +48,10 @@ function createGrid() {
         const div = document.createElement('div');
         grid.appendChild(div);
     }
+}
+
+function checkColor(color){
+    return colors.includes(color);
 }
 
 //draws the blocks with its assigned color
@@ -151,7 +155,7 @@ function placeBlock() {
         row.forEach((value, x) => {
             if (value) {
                 const index = (currentPosition.y + y) * cols + (currentPosition.x + x);
-                grid.children[index].style.backgroundColor = 'white';
+                grid.children[index].style.backgroundColor = currentColor;
             }
         });
     });
@@ -167,7 +171,7 @@ function removeFullRows() {
         let isFull = true;
         for (let x = 0; x < cols; x++) {
             const index = y * cols + x;
-            if (grid.children[index].style.backgroundColor !== 'white') {
+            if (!checkColor(grid.children[index].style.backgroundColor)) {
                 isFull = false;
                 break;
             }
@@ -223,7 +227,7 @@ function collision() {
                     //bottom boundary
                     Y >= rows ||
                     //filled block
-                    (Y >= 0 && grid.children[Y * cols + X].style.backgroundColor === 'white')
+                    (Y >= 0 &&  checkColor(grid.children[Y * cols + X].style.backgroundColor))
                 );
             }
             console.log('12') // no collision found
