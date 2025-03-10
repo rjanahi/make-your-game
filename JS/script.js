@@ -12,7 +12,7 @@ const gridContainer = document.getElementById('game-container');
 const gameOverDisplay = document.getElementById('gameOver');
 const overtimerDisplay = document.getElementById('timer2');
 const overscoreDisplay = document.getElementById('score2');
-const playerName = localStorage.getItem('name'); // Retrieve the player's name
+const playerName = localStorage.getItem('name'); 
 
 const rows = 20;
 const cols = 10;
@@ -78,6 +78,7 @@ function undrawBlock() {
     });
 }
 
+// automatically moves the block down, continuously checking for any collision
 function moveDown() {
     undrawBlock();
     currentPosition.y++;
@@ -93,13 +94,15 @@ function moveDown() {
 
 function generateRandomBlock() {
     if (!nextBlock) {
-        // If no next block, initialize it
+        // if no next block, initialize it
         nextBlock = blocks[Math.floor(Math.random() * blocks.length)];
     }
-    // Set current block to next block
+    
+    // set current block to next block
     currentBlock = nextBlock.shape;
     currentColor = nextBlock.color;
-    // Generate a new next block
+
+    // generate a new next block
     nextBlock = blocks[Math.floor(Math.random() * blocks.length)];
     currentPosition = { x: Math.floor(cols / 2) - 1, y: 0 };
 
