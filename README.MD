@@ -17,9 +17,9 @@ A web-based implementation of **Tetris** built with Go, JavaScript, HTML, and CS
 ## Technologies
 
 - Go
-- HTML5
-- CSS3
-- JavaScript (Vanilla)
+- HTML
+- CSS
+- JavaScript
 - SQLite
 
 ## Project Structure
